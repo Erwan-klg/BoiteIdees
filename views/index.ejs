@@ -1,0 +1,213 @@
+<html>
+  <head>
+    <title>Breizh Covoat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/materialize.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+    <script src="/javascripts/angularApp.js"></script>
+  </head>
+
+
+  <body ng-app="BC">
+
+    <div id="topbar">
+        <div id="title">
+          <h1><a href="/" style="text-decoration:none; color:black;">Breizh Covoat</a></h1>
+        </div>
+        <div id="menu" ng-controller="NavCtrl">
+          <ul>
+            <li ng-show="isLoggedIn()"><a style="text-transform:uppercase;color:#F56000;">{{ currentUser() }}</a></li>
+            <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Déconnexion</a></li>
+            <li ng-hide="isLoggedIn()"><a href="/#/login">Connexion</a></li>
+            <li ng-hide="isLoggedIn()"><a href="/#/register">S'enregister</a></li>
+          </ul>
+        </div>
+    </div>
+
+    <div id="container">
+      <div class="row">
+        <ui-view></ui-view>
+      </div>
+
+      <script src="/javascripts/materialize.js"></script>
+
+      <!-- Homepage -->
+      <script type="text/ng-template" id="/home.html">
+        <!-- Message for the user unauthantificated -->
+        <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
+          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+        </div>
+
+        <!-- Loop for show posts -->
+        <div ng-repeat="post in posts"  class='col s6'>
+          <h2 id='titre_carte' class='header'>Trajet de <a>{{post.start}}</a> à <a>{{post.end}}</a></h2>
+          <div class='card horizontal' id='card'>
+            <div class='card-image'></div>
+            <div class='card-stacked'>
+              <div class='card-content'>
+                <p>Voiture : <span style="color:#c51162;font-weight:900">{{post.car}}</span></p>
+                <br>
+                <p>Informations supplémentaire : <br><span style="color:#c51162;font-weight:900">{{post.info}}</span></p>
+                <br>
+                <p style='float:left'>Places disponibles : <span style="color:#c51162;font-weight:900">{{post.places}}</span></p><p style='float:right;font-weight:bold;font-weight:900'>Prix : <span style="color:#c51162;">{{post.price}}€</span></p>
+              </div>
+              <a style="text-align:center;padding:10px;color:#F56000;font-weight:900" target="/blank" href="https://www.google.fr/maps/dir/{{post.start}}/{{post.end}}">Visualiser le trajet</a>
+              <div class='card-action'>
+                <span style="float:left;">
+                  <a class="btn waves-effect grey darken-4" ng-click="reserve(post)">Réserver</a>
+                </span>
+                <span>
+                  <a class="btn waves-effect orange darken-4" href="#/posts/{{post._id}}">Commentaires</a>
+                </span style="float:right;">
+              </div>
+            </div>
+          </div>
+          <div id="authorOptions">
+            <span style="padding:0px 5px; color:#212121;" ng-show="post.author">
+              Posté par : <a style="text-transform:capitalize;font-weight:bolder;color:#c51162;">{{post.author}}</a>
+            </span>
+            <a id="postOptions" style="color:black;" ng-click="addplace(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-plus"></a>
+            <a id="postOptions" style="color:#b71c1c;" ng-click="remove(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-remove"></a>
+          </div>
+        </div>
+
+        <!-- Add form -->
+        <div class='col s12'>
+          <!-- Button for show the post form -->
+          <div id = "btnShowForm" >
+            <button onclick="showPostDiv()" ng-show="isLoggedIn()"type="submit" class="btn waves-effect pink accent-4">Afficher le formulaire</button>
+          </div>
+          <!-- Post form div -->
+          <div id="formPost" style="display:none;">
+            <div class="page-header" id="titleRegister">
+              <h2>Publier une annonce</h2>
+              <p>Merci de remplir tous les champs</p>
+
+            </div>
+
+            <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;" id="form">
+              <div class="form-group">
+                <input id="input" class="form-control" type="text" ng-model="start" placeholder="Depart"></input>
+                <input id="input" class="form-control" type="text" ng-model="end" placeholder="Arrivee"></input>
+                <input id="input" class="form-control" type="text" ng-model="car" placeholder="Voiture"></input>
+                <textarea style="resize:none; height:80px;margin-bottom:20px;" id="input" class="form-control" type="text" ng-model="info" placeholder="Informations supplémentaires"></textarea>
+                <input id="input" class="form-control" type="number" ng-model="places" placeholder="Places" min="0" max="10"></input>
+                <input id="input" class="form-control" type="number" ng-model="price" placeholder="Prix" min="0" value="0" max="500"></input>
+              </div>
+              <button type="submit" class="btn waves-effect grey darken-4">Envoyer !</button>
+            </form>
+          </div>
+      </script>
+
+      <script>
+      function showPostDiv(){
+        div = document.getElementById('formPost');
+        if(div.style.display == "none"){
+          div.style.display = "block";
+        }
+        else{
+          div.style.display = "none";
+        }
+      }
+      </script>
+
+      <!-- Posts and comments-->
+      <script type="text/ng-template" id="/posts.html">
+        <!-- Loop for show comments -->
+        <div style="margin-bottom:10px;" ng-repeat="comment in post.comments">
+          <span class="glyphicon glyphicon-comment"></span>
+            <a style="text-transform: capitalize;color:#F56000;text-decoration:none;">{{comment.author}} :</a>
+          <span style="font-size:20px; margin-left:10px;">
+            {{comment.body}}
+          </span>
+        </div>
+
+        <p>Membres :</p>
+        <ul ng-repeat="member in post.members">
+          <li style="text-transform: capitalize;color:#F56000;"><{{member.author}}</li>
+        </ul>
+
+        <!-- Comment form -->
+        <!-- Show the form only for the authenticated users -->
+        <form ng-submit="addComment()" ng-show="isLoggedIn()">
+          <div class="form-group">
+            <input id="input" type="text" class="form-control" placeholder="Commentaire"  ng-model="body"></input>
+          </div>
+          <button type="submit" class="btn waves-effect grey darken-4">Envoyer</button>
+        </form>
+
+        <!-- Message to users who aren't signed in -->
+        <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
+          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+        </div>
+      </script>
+
+      <!-- Register -->
+      <script type="text/ng-template" id="/register.html" class="connexion">
+        <div class="page-header" id="titleRegister">
+          <h2>Formulaire d'enregistrement</h2>
+          <p>Merci de remplir tous les champs</p>
+        </div>
+
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{ error.message }}</span>
+        </div>
+
+        <form ng-submit="register()" id="form">
+
+          <div class="form-group">
+            <input id="input" required="true" type="text" class="form-control" placeholder="Login" ng-model="user.username"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="email" class="form-control" placeholder="Email" ng-model="user.email"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="text" class="form-control" placeholder="Prenom" ng-model="user.name"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="text" class="form-control" placeholder="Nom" ng-model="user.lastname"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="text" class="form-control" placeholder="Ville" ng-model="user.country"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" required="true" type="tel" class="form-control" placeholder="Téléphone" ng-model="user.number"></input>
+          </div>
+          <button type="submit" class="btn waves-effect grey darken-4">S'enregistrer !</button>
+        </form>
+      </script>
+
+      <!-- Login -->
+      <script type="text/ng-template" id="/login.html">
+        <div class="page-header" id="titleRegister">
+          <h2>Formulaire de connexion</h2>
+          <p>Veuillez saisir vos login et mot de passe pour accéder au site web</p>
+        </div>
+
+        <div ng-show="error" class="alert alert-danger row">
+          <span>{{ error.message }}</span>
+        </div>
+
+        <form ng-submit="logIn()"style="margin-top:30px;" id="form">
+          <div class="form-group">
+            <input id="input" type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
+          </div>
+          <div class="form-group">
+            <input id="input" type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
+          </div>
+          <button type="submit" class="btn waves-effect grey darken-4">Connexion</button>
+        </form>
+      </script>
+    </div>
+  </body>
+  <footer>
+    <p>Copyright 2017 - Breizh Covoat</p>
+  </footer>
+</html>
