@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
-var Member = mongoose.model('Member');
 
 var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
@@ -26,13 +25,6 @@ router.get('/posts', function(req, res, next) {
 
 router.get('/posts/:post', function(req, res, next) {
   req.post.populate('comments', function(err, post) {
-    if (err) { return next(err); }
-
-    res.json(post);
-  });
-});
-router.get('/posts/:post', function(req, res, next) {
-  req.post.populate('members', function(err, post) {
     if (err) { return next(err); }
 
     res.json(post);
@@ -88,17 +80,9 @@ router.param('member', function(req,res,next,id){
   })
 })
 
-/*//Reserve method
-router.put('/posts/:post/reserve',auth, function(req, res, next) {//Auth for reserve
-  req.post.reserve(function(err, post){
-    if (err) { return next(err); }
-    res.json(post);
-  });
-});
-*/
-//Add method
-router.put('/posts/:post/addplace',auth, function(req, res, next) {//Auth for add place
-  req.post.addplace(function(err, post){
+//Upvote method
+router.put('/posts/:post/upvote',auth, function(req, res, next) {//Auth for add place
+  req.post.upvote(function(err, post){
     if (err) { return next(err); }
     res.json(post);
   });
@@ -134,23 +118,6 @@ router.post('/posts/:post/comments',auth, function(req, res, next) {//Auth for c
       if(err){ return next(err); }
 
       res.json(comment);
-    });
-  });
-});
-//Comments route for a particular post
-router.post('/posts/:post/members',auth, function(req, res, next) {//Auth for member
-  var member = new Member(req.body);
-  member.post = req.post;
-  member.author = req.payload.username;
-
-  member.save(function(err, member){
-    if(err){ return next(err); }
-
-    req.post.members.push(member);
-    req.post.save(function(err, post) {
-      if(err){ return next(err); }
-
-      res.json(member);
     });
   });
 });

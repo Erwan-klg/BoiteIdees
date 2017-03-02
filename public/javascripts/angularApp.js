@@ -1,4 +1,4 @@
-var app = angular.module('BC', ['ui.router']);
+var app = angular.module('IdeaBox', ['ui.router']);
 
 
 //Posts factory
@@ -19,15 +19,6 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
       o.posts.push(data);
-    });
-  };
-
-  //Add place
-  o.addplace = function(post){
-    return $http.put('/posts/' + post._id + '/addplace', null, {
-      headers: {Authorization: 'Bearer '+auth.getToken()}
-    }).success(function(data){
-      post.places += 1;
     });
   };
 
@@ -59,12 +50,12 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
     });
   };
 
-  //Reserve a place
-  o.reserve = function(id, member) {
-    return $http.put('/posts/' + id + '/reserve', member, {
+  //Vote
+  o.upvote = function(post) {
+    return $http.put('/posts/' + post._id + '/upvote',null, {
       headers: {Authorization: 'Bearer '+auth.getToken()}
     }).success(function(data){
-      post.places -= 1;
+      post.votes += 1;
     });
   };
 
@@ -184,39 +175,28 @@ app.controller('MainCtrl', ['$scope','posts','auth', function($scope,posts,auth)
   $scope.posts = posts.posts;
 
   $scope.addPost = function(){
-    if(!$scope.start || $scope.start === '' && !$scope.end || $scope.end === ''){
+    if(!$scope.title || $scope.title === '' && !$scope.content || $scope.content === ''){
       return;
     }
     else{
       //Push posts from the form
       posts.create({
         author: $scope.author,
-        start: $scope.start,
-        end: $scope.end,
-        car: $scope.car,
-        info: $scope.info,
-        places: $scope.places,
-        price: $scope.price,
+        title: $scope.title,
+        content: $scope.content,
+        category: $scope.category
       });
-      $scope.start = '';
-      $scope.end = '';
-      $scope.car = '';
-      $scope.info='';
-      $scope.places = '';
-      $scope.price = '';
+      $scope.title = '';
+      $scope.content = '';
+      $scope.category = '';
     }
   };
-  $scope.reserve = function(post) {
-    if(post.places > 0){
-      posts.reserve(post);
-    }
-  };
-  $scope.addplace = function(post) {
-    posts.addplace(post);
+  $scope.upvote = function(post) {
+    posts.upvote(post);
   };
   $scope.remove = function(post) {
     posts.remove(post);
-  }
+  };
 }]);
 
 //Post controller
@@ -233,15 +213,6 @@ app.controller('PostsCtrl', ['$scope','posts','post', 'auth', function($scope, p
         $scope.post.comments.push(comment);
       });
       $scope.body = '';
-    };
-
-    $scope.reserve = function(){
-      if($scope.body === '') { return; }
-      posts.reserve(post._id, {
-        author: 'user',
-      }).success(function(member) {
-        $scope.post.members.push(member);
-      });
     };
 }]);
 

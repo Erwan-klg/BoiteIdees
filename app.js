@@ -10,13 +10,12 @@ var passport = require('passport');
 var MONGO_URI = process.env.MONGODB_ADDON_URI;
 
 //Db connection
-mongoose.connect(MONGO_URI || "mongodb://localhost/bc");
+mongoose.connect(MONGO_URI || "mongodb://localhost/ideabox");
 
 //Files required
 require("./models/Posts");
 require("./models/Comments");
 require('./models/Users');
-require('./models/Members')
 require('./config/passport');
 
 var index = require('./routes/index');

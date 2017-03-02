@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Breizh Covoat</title>
+    <title>IdeaBox</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -12,11 +12,11 @@
   </head>
 
 
-  <body ng-app="BC">
+  <body ng-app="IdeaBox">
 
     <div id="topbar">
         <div id="title">
-          <h1><a href="/" style="text-decoration:none; color:black;">Breizh Covoat</a></h1>
+          <h1><a href="/" style="text-decoration:none; color:black;">IdeaBox</a></h1>
         </div>
         <div id="menu" ng-controller="NavCtrl">
           <ul>
@@ -43,22 +43,21 @@
         </div>
 
         <!-- Loop for show posts -->
-        <div ng-repeat="post in posts"  class='col s6'>
-          <h2 id='titre_carte' class='header'>Trajet de <a>{{post.start}}</a> à <a>{{post.end}}</a></h2>
+        <div ng-repeat="post in posts | orderBy: '-upvotes'"  class='col s6'>
+          <h2 id='titre_carte' class='header'>{{post.title}}</h2>
           <div class='card horizontal' id='card'>
             <div class='card-image'></div>
             <div class='card-stacked'>
               <div class='card-content'>
-                <p>Voiture : <span style="color:#c51162;font-weight:900">{{post.car}}</span></p>
+                <p>{{post.content}}</p>
                 <br>
-                <p>Informations supplémentaire : <br><span style="color:#c51162;font-weight:900">{{post.info}}</span></p>
+                <p>Catégorie : {{post.category}}</span></p>
                 <br>
-                <p style='float:left'>Places disponibles : <span style="color:#c51162;font-weight:900">{{post.places}}</span></p><p style='float:right;font-weight:bold;font-weight:900'>Prix : <span style="color:#c51162;">{{post.price}}€</span></p>
+                <p>Votes : {{post.votes}}</p>
               </div>
-              <a style="text-align:center;padding:10px;color:#F56000;font-weight:900" target="/blank" href="https://www.google.fr/maps/dir/{{post.start}}/{{post.end}}">Visualiser le trajet</a>
               <div class='card-action'>
                 <span style="float:left;">
-                  <a class="btn waves-effect grey darken-4" ng-click="reserve(post)">Réserver</a>
+                  <a class="btn waves-effect grey darken-4" ng-click="upvote(post)">Voter</a>
                 </span>
                 <span>
                   <a class="btn waves-effect orange darken-4" href="#/posts/{{post._id}}">Commentaires</a>
@@ -67,10 +66,9 @@
             </div>
           </div>
           <div id="authorOptions">
-            <span style="padding:0px 5px; color:#212121;" ng-show="post.author">
-              Posté par : <a style="text-transform:capitalize;font-weight:bolder;color:#c51162;">{{post.author}}</a>
+            <span style="padding:0px 5px;" ng-show="post.author">
+              Idée postée par : <a style="text-transform:capitalize;font-weight:bolder;color:#e65100">{{post.author}}</a>
             </span>
-            <a id="postOptions" style="color:black;" ng-click="addplace(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-plus"></a>
             <a id="postOptions" style="color:#b71c1c;" ng-click="remove(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-remove"></a>
           </div>
         </div>
@@ -79,24 +77,21 @@
         <div class='col s12'>
           <!-- Button for show the post form -->
           <div id = "btnShowForm" >
-            <button onclick="showPostDiv()" ng-show="isLoggedIn()"type="submit" class="btn waves-effect pink accent-4">Afficher le formulaire</button>
+            <button onclick="showPostDiv()" ng-show="isLoggedIn()"type="submit" class="btn waves-effect orange darken-4">Afficher le formulaire</button>
           </div>
           <!-- Post form div -->
           <div id="formPost" style="display:none;">
             <div class="page-header" id="titleRegister">
-              <h2>Publier une annonce</h2>
+              <h2>Poster son idée :</h2>
               <p>Merci de remplir tous les champs</p>
 
             </div>
 
             <form ng-submit="addPost()" ng-show="isLoggedIn()" style="margin-top:30px;" id="form">
               <div class="form-group">
-                <input id="input" class="form-control" type="text" ng-model="start" placeholder="Depart"></input>
-                <input id="input" class="form-control" type="text" ng-model="end" placeholder="Arrivee"></input>
-                <input id="input" class="form-control" type="text" ng-model="car" placeholder="Voiture"></input>
-                <textarea style="resize:none; height:80px;margin-bottom:20px;" id="input" class="form-control" type="text" ng-model="info" placeholder="Informations supplémentaires"></textarea>
-                <input id="input" class="form-control" type="number" ng-model="places" placeholder="Places" min="0" max="10"></input>
-                <input id="input" class="form-control" type="number" ng-model="price" placeholder="Prix" min="0" value="0" max="500"></input>
+                <input id="input" class="form-control" type="text" ng-model="title" placeholder="Titre"></input>
+                <input id="input" class="form-control" type="text" ng-model="category" placeholder="Catégorie"></input>
+                <textarea style="resize:none; height:80px;margin-bottom:20px;" id="input" class="form-control" type="text" ng-model="content" placeholder="Explications"></textarea>
               </div>
               <button type="submit" class="btn waves-effect grey darken-4">Envoyer !</button>
             </form>
@@ -208,6 +203,6 @@
     </div>
   </body>
   <footer>
-    <p>Copyright 2017 - Breizh Covoat</p>
+    <p>Copyright 2017 - IdeaBox</p>
   </footer>
 </html>
