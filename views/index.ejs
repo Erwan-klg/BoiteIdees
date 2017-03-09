@@ -128,7 +128,7 @@
             <div id="bloc-comments">                
                 <div ng-repeat="comment in post.comments | orderBy: '-date'">
                   <span class="glyphicon glyphicon-comment"></span>
-                    <a style="text-transform: capitalize;color:#F56000;text-decoration:none;">Date : {{comment.date | date:'dd MM yyyy hh:mm'}}, Auteur : {{comment.author}} :</a>
+                    <a style="text-transform: capitalize;color:#F56000;text-decoration:none;">Date : {{comment.date | date:'dd MM yyyy HH:mm'}}, Auteur : {{comment.author}} :</a>
                   <span style="font-size:20px; margin-left:10px;">
                     {{comment.body}}
                   </span>
