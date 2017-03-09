@@ -14,70 +14,136 @@
 
 /* Html */
 html{
-  font-family: OpenSans-Regular;
-}
-body{
-  padding-left: 10px;
-  padding-right: 10px;
+    font-family: OpenSans-Regular;
 }
 footer{
-  text-align: center;
-  color:black;
-  font-size: 15px;
-  font-family: Pacifico;
+    z-index: +2;
+    width: 100%;
+    background-color: #1E1E1E;
+    text-align: center;
+    color:#F1F1F1;
+    font-size: 14px;
+    font-family: Pacifico;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    
+}
+footer p{
+    margin:0;
+    padding: 5px;
+    
+}
+
+.row{
+    margin-bottom: 0px !important;
 }
 /* Color */
+.btn:hover{
+    color: #F1F1F1;
+}
+.btn:focus{
+    color: #F1F1F1;
+}
 
 /* Header */
+#back-topbar{
+    width: 100%;
+    background-color: #1E1E1E;
+    height:60px;
+    position: fixed;
+    z-index: +2; /* Profondeur */
+}
 #topbar{
     margin:auto;
     max-width: 1000px;
-    border-bottom: 2px solid black;
-    height: 60px;
-    margin-bottom: 20px;
-
+    height: 60px;   
 }
 
+#title{
+    margin:0;
+    padding:0;
+    height: 60px;
+    padding-left: 5px;
+    display: inline-block;
+    float:left;
+}
 #title h1{
     text-align: center;
     padding:10px;
     margin: 0;
-    color: black;
     font-size: 30px;
     font-family: Pacifico;
 }
-
-#title{
-  margin:0;
-  padding:0;
-  height: 60px;
-  padding-left: 5px;
-  display: inline-block;
-  float:left;
+#title a{
+    color:#F1F1F1;
+    text-decoration: none;
 }
+
+/* Presentation */
+#back-presentation{
+    width: 100%;
+    background-color: #F1F1F1;
+    box-shadow: 1px 1px 1px #E1E1E1;
+}
+#presentation{
+    max-width: 1000px;
+    text-align: center;
+    margin: auto;
+    padding: 50px;
+    margin-top: 50px;
+}
+#presentation h1{
+    font-size: 40px;
+    font-weight: bold;
+    font-family: OpenSans-Regular;
+    margin:0;     
+}
+#presentation p{
+    font-size: 20px;
+    margin: 20px;
+    font-family: OpenSans-Regular;
+    margin-bottom: 20px;
+}
+#presentation a{
+    font-family: OpenSans-Regular;
+    font-size: 18px;
+    text-decoration: none;
+    background-color: rebeccapurple;
+    margin-top: 20px;
+}
+#presentation a:hover{
+    color:white;
+    background-color: mediumpurple;
+}
+
 #menu{
-  margin:auto;
-  padding:0px;
-  height: 60px;
-  display: inline-block;
-  float:right;
-  text-align: center;
+    margin:auto;
+    padding:0px;
+    height: 60px;
+    display: inline-block;
+    float:right;
+    text-align: center;
 }
 #menu li{
-  margin:auto;
-  padding:0px 5px;
-  display: inline-block;
-  float:right;
-  font-size: 15px;
-  text-align: center;
+    margin:auto;
+    padding:0px 5px;
+    display: inline-block;
+    float:right;
+    font-size: 16px;
+    text-align: center;
+    margin-left: 10px;
 }
 #menu a{
-  text-decoration: none;
-  color:black;
+    text-decoration: none;
+    font-weight: 500;
+    color:#F1F1F1;
+    font-family: OpenSans-Regular;
 }
 #menu a:hover{
-  text-decoration: none;
-  color:#F56000;;
+    text-decoration: none;    
+    color:orangered;
+    font-weight: 500;
 }
 
 #error a{
@@ -132,14 +198,26 @@ footer{
 #submit_form{
   margin: 10px;
 }
+
+.card-stacked{
+    background-color: #F1F1F1;
+}
+.card-action{
+    max-width: 200px;
+
+    background-color: #F1F1F1;
+}
 #titre_carte{
-  color:black;
-  font-size:25px;
-  text-align: center;
-  padding: 10px;
-  background-color: rgba(0, 0, 0, 0.0);
-  color:black;
-  font-family:OpenSans-Regular;
+    margin: 0px;
+    padding: 20px;
+    color:black;
+    font-size:25px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.0);
+    color:black;
+    font-family:OpenSans-Regular;
+    background-color: #1E1E1E;
+    color:white;
 }
 #titre_carte a{
   color:#F56000;
@@ -151,9 +229,16 @@ footer{
   font-family:OpenSans-Regular;
 }
 #card a{
-  margin-right: 0px;
-  float:right;
-  font-family:OpenSans-Regular;
+    font-family:OpenSans-Regular;
+    margin: 5px;
+    width:100%;
+}
+
+#card-action{
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+    background-color: #F1F1F1;
 }
 
 #postOptions{
@@ -167,46 +252,143 @@ footer{
   text-align: center;
   border:none;
   background-color: #F5F5F5;
+    border-radius: 2px;
 }
 #input:focus{
   border-bottom: 1px solid #F56000;
   box-shadow: 0 1px 0 0 #F56000;
 }
 
-#form{
-  margin-top:30px;
-  width:400px;
+#error{
+    max-width: 300px;
   margin:auto;
   text-align:center;
 }
-#btnShowForm{
-  margin-top: 50px;
-  margin-bottom: 20px;
-  text-align: center;
+
+#form{
+  margin-top:30px;
+    max-width: 300px;
+  margin:auto;
+  text-align:center;
 }
+
+#form button{
+    font-family: OpenSans-Regular;
+    font-size:16px;
+    text-decoration: none;
+    background-color: #1E1E1E;
+}
+
+#formPost{
+    margin: 20px;
+}
+#formRegister{
+  margin-top:30px;
+    max-width:800px;
+  margin:auto;
+  text-align:center;
+}
+
+#formRegister button{
+    font-family: OpenSans-Regular;
+    font-size:16px;
+    text-decoration: none;
+    background-color: #1E1E1E;
+}
+
+
+#btnShowForm{
+    margin-top:20px;
+}
+
 #btnShowForm a{
-  color:black;
-  text-align: center;;
-  font-family: OpenSans-Regular;
-  font-size: 20px;
-  cursor: pointer;
-  text-decoration: none;
+    font-family: OpenSans-Regular;
+    font-size:18px;
+    text-decoration: none;
+    background-color: #1E1E1E;
 }
 #btnShowForm a:hover{
-  color:grey;
-  text-align: center;;
-  font-family: OpenSans-Regular;
-  font-size: 20px;
-  cursor: pointer;
+    color:white;
+    background-color: #2E2E2E;
 }
 
 #titleRegister{
-  text-align: center;;
-  font-family: OpenSans-Regular;
+  text-align: center;
+    margin-top: 100px;
 }
 
 #titleRegister h2{
-  color: #F56000;
-  font-weight: 400;
+  color: orangered;
+  font-weight: bold;
   font-size: 40px;
+    font-family: OpenSans-Regular;
+}
+#titleRegister p{
+  font-size: 20px;
+      font-family: OpenSans-Regular;
+}
+
+
+#back-form-post{
+    background-color: white;
+    padding: 0;
+    margin: 0;
+}
+
+#titlePost{
+  text-align: center;
+    margin-top: 20px;
+}
+#titlePost h2{
+  color: orangered;
+  font-weight: bold;
+  font-size: 40px;
+    font-family: OpenSans-Regular;
+}
+#titlePost p{
+  font-size: 20px;
+      font-family: OpenSans-Regular;
+}
+
+#back-list-post{
+    background-color: grey;
+    padding: 0;
+    margin: 0;
+    padding-top: 15px;
+    padding-bottom: 30px;
+}
+#list-post{
+    margin: auto;
+    padding: 10px;
+    max-width: 1000px;
+}
+
+#back-comments{
+    width: 100%;
+    background-color: #F1F1F1;
+}
+
+#bloc-comments{
+    max-width: 1000px;
+    text-align: center;
+    margin: auto;
+    padding: 10px;  
+    text-align: left;
+}
+
+#back-comments h4{
+    font-size: 40px;
+    margin-top: 60px;
+    padding: 40px;    
+    font-family: OpenSans-Regular;
+    font-weight: bolder;
+    text-align: center;
+}
+
+#comment-form{
+    margin-top:30px;
+    max-width:600px;
+    margin:auto;
+    text-align:center;
+    padding: 20px;
 }

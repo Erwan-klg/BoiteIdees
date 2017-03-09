@@ -80,6 +80,14 @@ router.param('member', function(req,res,next,id){
   })
 })
 
+//Downvote method
+router.put('/posts/:post/downvote',auth, function(req, res, next) {//Auth for add place
+  req.post.downvote(function(err, post){
+    if (err) { return next(err); }
+    res.json(post);
+  })
+})
+
 //Upvote method
 router.put('/posts/:post/upvote',auth, function(req, res, next) {//Auth for add place
   req.post.upvote(function(err, post){

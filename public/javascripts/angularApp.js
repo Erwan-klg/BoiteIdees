@@ -58,6 +58,15 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
       post.votes += 1;
     });
   };
+    
+    //Down vote
+    o.downvote = function(post) {
+    return $http.put('/posts/' + post._id + '/downvote',null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      post.contres += 1;
+    });
+  };
 
   return o;
 }]);
@@ -194,6 +203,9 @@ app.controller('MainCtrl', ['$scope','posts','auth', function($scope,posts,auth)
   $scope.upvote = function(post) {
     posts.upvote(post);
   };
+    $scope.downvote = function(post) {
+    posts.downvote(post);
+  };
   $scope.remove = function(post) {
     posts.remove(post);
   };
@@ -203,11 +215,13 @@ app.controller('MainCtrl', ['$scope','posts','auth', function($scope,posts,auth)
 app.controller('PostsCtrl', ['$scope','posts','post', 'auth', function($scope, posts, post,auth){
   $scope.post = post;
   $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.date = new Date();
 
     $scope.addComment = function(){
       if($scope.body === '') { return; }
       posts.addComment(post._id, {
         body: $scope.body,
+        date : $scope.date,
         author: 'user',
       }).success(function(comment) {
         $scope.post.comments.push(comment);
