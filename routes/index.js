@@ -133,29 +133,36 @@ router.post('/posts/:post/comments',auth, function(req, res, next) {//Auth for c
 //Post username and password for a user
 router.post('/register', function(req,res,next){
   if(!req.body.username || !req.body.password){
-    return res.status(400).json({message : 'Please fill out all fields.'});
+    return res.status(400).json({message : 'Merci de remplir tous les champs'});
   }
 
-  var user = new User();
+    if(req.body.email == req.body.email2){
+        var user = new User();
 
-  user.username = req.body.username;
-  user.email = req.body.email;
-  user.name = req.body.name;
-  user.lastname = req.body.lastname;
-  user.country = req.body.country;
-  user.number = req.body.number;
-  user.setPassword(req.body.password)
+      user.username = req.body.username;
+      user.email = req.body.email;
+      user.name = req.body.name;
+      user.lastname = req.body.lastname;
+      user.country = req.body.country;
+      user.number = req.body.number;
+      user.setPassword(req.body.password)
 
-  user.save(function(err){
-    if(err){return next(err);}
-    return res.json({token: user.generateJWT()})
-  });
+      user.save(function(err){
+        if(err){return next(err);}
+        return res.json({token: user.generateJWT()})
+      });
+    }
+    else{
+        return res.status(400).json({message : 'Les emails ne sont pas identiques'});
+    }
+
+  
 });
 
 //Login route for authenticate user and return a token
 router.post('/login', function(req, res, next){
   if(!req.body.username || !req.body.password){
-    return res.status(400).json({message: 'Please fill out all fields'});
+    return res.status(400).json({message: 'Merci de remplir tous les champs'});
   }
 
   passport.authenticate('local', function(err, user, info){
