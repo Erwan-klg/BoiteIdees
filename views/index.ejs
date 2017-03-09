@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/stylesheets/materialize.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/javascripts/angularApp.js"></script>
     <base href="/">
   </head>
@@ -25,8 +26,8 @@
               <ul>
                 <li ng-show="isLoggedIn()"><a style="text-transform:uppercase;color:orangered;">{{ currentUser() }}</a></li>
                 <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Déconnexion</a></li>
-                <li ng-hide="isLoggedIn()"><a href="/#/login">Connexion</a></li>
-                <li ng-hide="isLoggedIn()"><a href="/#/register">S'enregister</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/login">Connexion</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/register">S'enregister</a></li>
               </ul>
             </div>
         </div>
@@ -46,7 +47,7 @@
                 <h1>Présentation</h1>
                 <p>Bienvenue sur IdéeBoite, le seul site qui vous permet de déposer votre idée et d'ainsi obtenir l'avis des utilisateur, chacun peut voter pour l'idée qui lui plait le plus, l'idée la plus populaire sera récompensée et un système de financement participatif sera alors mis en place.</p>
                 <p>Alors creusez vous la tête pour trouver la meilleure idée et postez là !</p>
-                <a  ng-hide="isLoggedIn()" class="waves-effect waves-light btn-large" href="/#/login">Poster son idée !</a>
+                <a  ng-hide="isLoggedIn()" class="waves-effect waves-light btn-large" href="/login">Poster son idée !</a>
                 <!-- Button for show the post form -->
                 <div id = "btnShowForm" >
                     <a onclick="showPostDiv()" ng-show="isLoggedIn()" class="waves-effect waves-light btn-large">Affiche le formulaire et poste ton idée...</a>
@@ -55,7 +56,7 @@
         </div>
         <!-- Message for the user unauthantificated 
         <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
-          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+          <p>Vous devez vous <a href="/login">connecter</a> ou vous <a href="/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
         </div>-->
         
          <!-- Add form -->
@@ -100,7 +101,7 @@
                         <div class='card-action' id="card-action">
                               <a class="btn waves-effect green darken-1" ng-click="upvote(post)">J'aime</a>
                               <a class="btn waves-effect red darken-1" ng-click="downvote(post)">J'aime pas</a>
-                              <a class="btn waves-effect orange darken-4" href="#/posts/{{post._id}}">Commenter</a>
+                              <a class="btn waves-effect orange darken-4" href="/posts/{{post._id}}">Commenter</a>
                         </div>
                     </div>
                 </div>              
@@ -154,7 +155,7 @@
         </div>
         <!-- Message to users who aren't signed in -->
         <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
-          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+          <p>Vous devez vous <a href="/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
         </div>
       </script>
 
@@ -208,7 +209,7 @@
       <script type="text/ng-template" id="/login.html">
         <div class="page-header" id="titleRegister">
           <h2>Formulaire de connexion</h2>
-          <p>Petite vérification :), si vous n'avez pas de compte cliquez <a style="color:orangered; text-decoration:none" href="/#/register">ici</a></p>
+          <p>Petite vérification :), si vous n'avez pas de compte cliquez <a style="color:orangered; text-decoration:none" href="/register">ici</a></p>
         </div>
 
         <div id="error" ng-show="error" class="alert alert-danger row">

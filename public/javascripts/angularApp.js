@@ -120,7 +120,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   auth.logOut = function(){
     $window.localStorage.removeItem('BC-token');
   }
-
   return auth;
 }]);
 
@@ -128,12 +127,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 app.config([
 '$stateProvider',
 '$urlRouterProvider',
-function($stateProvider, $urlRouterProvider) {
+'$locationProvider',
+function($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider
     //Home route
     .state('home', {
-      url: '/home',
+      url: '/',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
       resolve: { //Surtout ne pas modifier
@@ -173,7 +173,7 @@ function($stateProvider, $urlRouterProvider) {
         }
       }]
     });
-  $urlRouterProvider.otherwise('home');
+  $locationProvider.html5Mode(true);
 }]);
 
 //Main Controller
