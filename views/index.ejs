@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr">
   <head>
     <title>IdeaBox</title>
     <meta charset="utf-8">
@@ -8,27 +9,31 @@
     <link rel="stylesheet" href="/stylesheets/materialize.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="/javascripts/angularApp.js"></script>
+    <base href="/">
   </head>
 
 
   <body ng-app="IdeaBox">
 
-    <div id="topbar">
-        <div id="title">
-          <h1><a href="/" style="text-decoration:none; color:black;">IdeaBox</a></h1>
-        </div>
-        <div id="menu" ng-controller="NavCtrl">
-          <ul>
-            <li ng-show="isLoggedIn()"><a style="text-transform:uppercase;color:#F56000;">{{ currentUser() }}</a></li>
-            <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Déconnexion</a></li>
-            <li ng-hide="isLoggedIn()"><a href="/#/login">Connexion</a></li>
-            <li ng-hide="isLoggedIn()"><a href="/#/register">S'enregister</a></li>
-          </ul>
+    <div id=back-topbar>
+        <div id="topbar">
+            <div id="title">
+              <h1><a href="/">IdéeBoite</a></h1>
+            </div>
+            <div id="menu" ng-controller="NavCtrl">
+              <ul>
+                <li ng-show="isLoggedIn()"><a style="text-transform:uppercase;color:orangered;">{{ currentUser() }}</a></li>
+                <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Déconnexion</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/login">Connexion</a></li>
+                <li ng-hide="isLoggedIn()"><a href="/register">S'enregister</a></li>
+              </ul>
+            </div>
         </div>
     </div>
 
-    <div id="container">
+    <div>
       <div class="row">
         <ui-view></ui-view>
       </div>
@@ -37,53 +42,30 @@
 
       <!-- Homepage -->
       <script type="text/ng-template" id="/home.html">
-        <!-- Message for the user unauthantificated -->
-        <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
-          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
-        </div>
-
-        <!-- Loop for show posts -->
-        <div ng-repeat="post in posts | orderBy: '-upvotes'"  class='col s6'>
-          <h2 id='titre_carte' class='header'>{{post.title}}</h2>
-          <div class='card horizontal' id='card'>
-            <div class='card-image'></div>
-            <div class='card-stacked'>
-              <div class='card-content'>
-                <p>{{post.content}}</p>
-                <br>
-                <p>Catégorie : {{post.category}}</span></p>
-                <br>
-                <p>Votes : {{post.votes}}</p>
-              </div>
-              <div class='card-action'>
-                <span style="float:left;">
-                  <a class="btn waves-effect grey darken-4" ng-click="upvote(post)">Voter</a>
-                </span>
-                <span>
-                  <a class="btn waves-effect orange darken-4" href="#/posts/{{post._id}}">Commentaires</a>
-                </span style="float:right;">
-              </div>
+        <div id="back-presentation">
+            <div id="presentation">
+                <h1>Présentation</h1>
+                <p>Bienvenue sur IdéeBoite, le seul site qui vous permet de déposer votre idée et d'ainsi obtenir l'avis des utilisateur, chacun peut voter pour l'idée qui lui plait le plus, l'idée la plus populaire sera récompensée et un système de financement participatif sera alors mis en place.</p>
+                <p>Alors creusez vous la tête pour trouver la meilleure idée et postez là !</p>
+                <a  ng-hide="isLoggedIn()" class="waves-effect waves-light btn-large" href="/login">Poster son idée !</a>
+                <!-- Button for show the post form -->
+                <div id = "btnShowForm" >
+                    <a onclick="showPostDiv()" ng-show="isLoggedIn()" class="waves-effect waves-light btn-large">Affiche le formulaire et poste ton idée...</a>
+                </div>
             </div>
-          </div>
-          <div id="authorOptions">
-            <span style="padding:0px 5px;" ng-show="post.author">
-              Idée postée par : <a style="text-transform:capitalize;font-weight:bolder;color:#e65100">{{post.author}}</a>
-            </span>
-            <!-- <a id="postOptions" style="color:#b71c1c;" ng-click="remove(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-remove"></a> -->
-          </div>
         </div>
-
-        <!-- Add form -->
-        <div class='col s12'>
-          <!-- Button for show the post form -->
-          <div id = "btnShowForm" >
-            <button onclick="showPostDiv()" ng-show="isLoggedIn()"type="submit" class="btn waves-effect orange darken-4">Afficher le formulaire</button>
-          </div>
-          <!-- Post form div -->
-          <div id="formPost" style="display:none;">
-            <div class="page-header" id="titleRegister">
-              <h2>Poster son idée :</h2>
-              <p>Merci de remplir tous les champs</p>
+        <!-- Message for the user unauthantificated 
+        <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
+          <p>Vous devez vous <a href="/login">connecter</a> ou vous <a href="/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+        </div>-->
+        
+         <!-- Add form -->
+        <div id="back-form-post">          
+            <!-- Post form div -->
+            <div id="formPost" style="display:none;">
+            <div class="page-header" id="titlePost">
+              <h2>C'est par ici :) </h2>
+              <p>Remplis bien tous les champs et détail ton idée</p>
 
             </div>
 
@@ -91,11 +73,40 @@
               <div class="form-group">
                 <input id="input" class="form-control" type="text" ng-model="title" placeholder="Titre"></input>
                 <input id="input" class="form-control" type="text" ng-model="category" placeholder="Catégorie"></input>
-                <textarea style="resize:none; height:80px;margin-bottom:20px;" id="input" class="form-control" type="text" ng-model="content" placeholder="Explications"></textarea>
+                <textarea style="resize:none; height:80px;margin-bottom:20px;" id="input" class="form-control" type="text" ng-model="content" placeholder="Quelques mots sur ton idée..."></textarea>
               </div>
               <button type="submit" class="btn waves-effect grey darken-4">Envoyer !</button>
             </form>
-          </div>
+            </div>   
+        </div>
+
+        <!-- Loop for show posts -->
+        <div id="back-list-post">
+                <div ng-repeat="post in posts | orderBy: '-upvotes'"  id="list-post">
+                  <h2 id='titre_carte' class='header'>{{post.title}}</h2>
+                  <div class='card horizontal' id='card'>
+                        <div class='card-image'></div>
+                        <div class='card-stacked'>
+                            <div class='card-content'>
+                                <p>{{post.content}}</p>
+                                <br>
+                                <p>Catégorie : {{post.category}}</span></p>
+                                <br>
+                                <p>Pour : {{post.votes}}, contre : {{post.contres}}</p>
+                                <br>
+                                <p>Idée postée par : <a style="text-transform:capitalize;font-weight:bolder;color:orangered">{{post.author}}</a></p>
+                            </div>
+                        <!-- <a id="postOptions" style="color:#b71c1c;" ng-click="remove(post)" ng-show="isLoggedIn()" class="glyphicon glyphicon-remove"></a> -->
+                        </div>
+                        <div class='card-action' id="card-action">
+                              <a class="btn waves-effect green darken-1" ng-click="upvote(post)">J'aime</a>
+                              <a class="btn waves-effect red darken-1" ng-click="downvote(post)">J'aime pas</a>
+                              <a class="btn waves-effect orange darken-4" href="/posts/{{post._id}}">Commenter</a>
+                        </div>
+                    </div>
+                </div>              
+            </div> 
+        </div>   
       </script>
 
       <script>
@@ -113,69 +124,84 @@
       <!-- Posts and comments-->
       <script type="text/ng-template" id="/posts.html">
         <!-- Loop for show comments -->
-        <div style="margin-bottom:10px;" ng-repeat="comment in post.comments">
-          <span class="glyphicon glyphicon-comment"></span>
-            <a style="text-transform: capitalize;color:#F56000;text-decoration:none;">{{comment.author}} :</a>
-          <span style="font-size:20px; margin-left:10px;">
-            {{comment.body}}
-          </span>
+        <div id="back-comments">
+            <h4>{{post.title}}</h4>
+            <div id="bloc-comments">                
+                <div ng-repeat="comment in post.comments | orderBy: '-date'">
+                  <span class="glyphicon glyphicon-comment"></span>
+                    <a style="text-transform: capitalize;color:#F56000;text-decoration:none;">Date : {{comment.date | date:'dd MM yyyy HH:mm'}}, Auteur : {{comment.author}} :</a>
+                  <span style="font-size:20px; margin-left:10px;">
+                    {{comment.body}}
+                  </span>
+                </div>
+            </div>
+        
+
+            <ul ng-repeat="member in post.members">
+              <li style="text-transform: capitalize;color:#F56000;"><{{member.author}}</li>
+            </ul>
+
+            <!-- Comment form -->
+            <!-- Show the form only for the authenticated users -->
+            <div id="comment-form">
+                <form ng-submit="addComment()" ng-show="isLoggedIn()">
+                  <div class="form-group">
+                    <input id="input" type="text" class="form-control" placeholder="Commentaire"  ng-model="body"></input>
+                  </div>
+                  <button type="submit" class="btn waves-effect grey darken-4">Envoyer</button>
+                </form>
+            </div>
+        
         </div>
-
-        <p>Membres :</p>
-        <ul ng-repeat="member in post.members">
-          <li style="text-transform: capitalize;color:#F56000;"><{{member.author}}</li>
-        </ul>
-
-        <!-- Comment form -->
-        <!-- Show the form only for the authenticated users -->
-        <form ng-submit="addComment()" ng-show="isLoggedIn()">
-          <div class="form-group">
-            <input id="input" type="text" class="form-control" placeholder="Commentaire"  ng-model="body"></input>
-          </div>
-          <button type="submit" class="btn waves-effect grey darken-4">Envoyer</button>
-        </form>
-
         <!-- Message to users who aren't signed in -->
         <div id="error" ng-hide="isLoggedIn()" style="text-align:center; margin:10px;">
-          <p>Vous devez vous <a href="/#/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
+          <p>Vous devez vous <a href="/login">connecter</a> ou vous <a href="/#/register">enregistrer</a> avant de pouvoir ajouter une annonce.</p>
         </div>
       </script>
 
       <!-- Register -->
       <script type="text/ng-template" id="/register.html" class="connexion">
         <div class="page-header" id="titleRegister">
-          <h2>Formulaire d'enregistrement</h2>
-          <p>Merci de remplir tous les champs</p>
+          <h2>Formulaire d'inscription</h2>
+          <p>Avant de pouvoir poster votre idée il est nécessaire de créer son compte ;) </p>
         </div>
 
-        <div ng-show="error" class="alert alert-danger row">
+        <div id="error" ng-show="error" class="alert alert-danger row">
           <span>{{ error.message }}</span>
         </div>
 
-        <form ng-submit="register()" id="form">
-
-          <div class="form-group">
-            <input id="input" required="true" type="text" class="form-control" placeholder="Login" ng-model="user.username"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="email" class="form-control" placeholder="Email" ng-model="user.email"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="text" class="form-control" placeholder="Prenom" ng-model="user.name"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="text" class="form-control" placeholder="Nom" ng-model="user.lastname"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="text" class="form-control" placeholder="Ville" ng-model="user.country"></input>
-          </div>
-          <div class="form-group">
-            <input id="input" required="true" type="tel" class="form-control" placeholder="Téléphone" ng-model="user.number"></input>
-          </div>
-          <button type="submit" class="btn waves-effect grey darken-4">S'enregistrer !</button>
+        <form ng-submit="register()" id="formRegister">
+            <div style="float:left;width:48%;">
+              <div class="form-group">
+                <input id="input" required="true" type="text" class="form-control" placeholder="Identifiant" ng-model="user.username"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="email" class="form-control" placeholder="Email" ng-model="user.email"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="email" class="form-control" placeholder="Confirmer votre email" ng-model="user.email2"></input>
+              </div>
+            </div>
+            <div style="float:right;width:48%;">
+              <div class="form-group">
+                <input id="input" required="true" type="text" class="form-control" placeholder="Prenom" ng-model="user.name"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="text" class="form-control" placeholder="Nom" ng-model="user.lastname"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="text" class="form-control" placeholder="Ville" ng-model="user.country"></input>
+              </div>
+              <div class="form-group">
+                <input id="input" required="true" type="tel" class="form-control" placeholder="Téléphone" ng-model="user.number"></input>
+              </div>
+            </div>
+            <div style="width:100%;">
+              <button type="submit" class="btn waves-effect grey darken-4">S'enregistrer !</button>
+            </div>
         </form>
       </script>
 
@@ -183,26 +209,27 @@
       <script type="text/ng-template" id="/login.html">
         <div class="page-header" id="titleRegister">
           <h2>Formulaire de connexion</h2>
-          <p>Veuillez saisir vos login et mot de passe pour accéder au site web</p>
+          <p>Petite vérification :), si vous n'avez pas de compte cliquez <a style="color:orangered; text-decoration:none" href="/register">ici</a></p>
         </div>
 
-        <div ng-show="error" class="alert alert-danger row">
+        <div id="error" ng-show="error" class="alert alert-danger row">
           <span>{{ error.message }}</span>
         </div>
 
         <form ng-submit="logIn()"style="margin-top:30px;" id="form">
           <div class="form-group">
-            <input id="input" type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
+            <input id="input" type="text" class="form-control" placeholder="Identifiant" ng-model="user.username"></input>
           </div>
           <div class="form-group">
-            <input id="input" type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
+            <input id="input" type="password" class="form-control" placeholder="Mot de passe" ng-model="user.password"></input>
           </div>
           <button type="submit" class="btn waves-effect grey darken-4">Connexion</button>
         </form>
+
       </script>
     </div>
   </body>
   <footer>
-    <p>Copyright 2017 - IdeaBox</p>
+    <p>Copyright 2017 - IdéeBoite</p>
   </footer>
 </html>

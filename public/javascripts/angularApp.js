@@ -58,6 +58,15 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
       post.votes += 1;
     });
   };
+    
+    //Down vote
+    o.downvote = function(post) {
+    return $http.put('/posts/' + post._id + '/downvote',null, {
+      headers: {Authorization: 'Bearer '+auth.getToken()}
+    }).success(function(data){
+      post.contres += 1;
+    });
+  };
 
   return o;
 }]);
@@ -111,7 +120,6 @@ app.factory('auth', ['$http', '$window', function($http, $window){
   auth.logOut = function(){
     $window.localStorage.removeItem('BC-token');
   }
-
   return auth;
 }]);
 
@@ -119,12 +127,13 @@ app.factory('auth', ['$http', '$window', function($http, $window){
 app.config([
 '$stateProvider',
 '$urlRouterProvider',
-function($stateProvider, $urlRouterProvider) {
+'$locationProvider',
+function($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider
     //Home route
     .state('home', {
-      url: '/home',
+      url: '/',
       templateUrl: '/home.html',
       controller: 'MainCtrl',
       resolve: { //Surtout ne pas modifier
@@ -164,7 +173,7 @@ function($stateProvider, $urlRouterProvider) {
         }
       }]
     });
-  $urlRouterProvider.otherwise('home');
+  $locationProvider.html5Mode(true);
 }]);
 
 //Main Controller
@@ -194,6 +203,9 @@ app.controller('MainCtrl', ['$scope','posts','auth', function($scope,posts,auth)
   $scope.upvote = function(post) {
     posts.upvote(post);
   };
+    $scope.downvote = function(post) {
+    posts.downvote(post);
+  };
   $scope.remove = function(post) {
     posts.remove(post);
   };
@@ -203,11 +215,13 @@ app.controller('MainCtrl', ['$scope','posts','auth', function($scope,posts,auth)
 app.controller('PostsCtrl', ['$scope','posts','post', 'auth', function($scope, posts, post,auth){
   $scope.post = post;
   $scope.isLoggedIn = auth.isLoggedIn;
+    $scope.date = new Date();
 
     $scope.addComment = function(){
       if($scope.body === '') { return; }
       posts.addComment(post._id, {
         body: $scope.body,
+        date : $scope.date,
         author: 'user',
       }).success(function(comment) {
         $scope.post.comments.push(comment);

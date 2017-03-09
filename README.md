@@ -2,7 +2,7 @@
 
 School project of an idea box.
 
-This is a web application, it's hosting in clevercloud : http://breizhcovoat.cleverapps.io
+This is a web application, it's hosting in clevercloud : http://ideabox.cleverapps.io/
 
 Steps to launch the projet :
 
